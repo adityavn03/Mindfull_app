@@ -124,7 +124,7 @@ function App() {
 
       <h2>Habits</h2>
       <input type="text" placeholder="New Habit" value={habitName} onChange={(e) => setHabitName(e.target.value)} />
-      <button onClick={addHabit}>Add Habit</button>
+      <button onClick={addHabit}>Add MindFull</button>
 
       <ul>
         {habits.map((habit) => (

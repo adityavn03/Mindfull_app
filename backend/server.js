@@ -11,7 +11,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// Connect to MongoDB
+
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("✅ Connected to MongoDB"))
@@ -19,9 +19,8 @@ mongoose
 
 const PORT = process.env.PORT || 5000;
 
-// 🟢 USER AUTHENTICATION ROUTES
 
-// Register a new user
+
 app.post("/api/users/register", async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -39,7 +38,6 @@ app.post("/api/users/register", async (req, res) => {
   }
 });
 
-// Get all users
 app.get("/api/users", async (req, res) => {
   try {
     const users = await User.find();
@@ -49,9 +47,7 @@ app.get("/api/users", async (req, res) => {
   }
 });
 
-// 🟢 HABIT TRACKING ROUTES
 
-// Add a new habit
 app.post("/api/habits", async (req, res) => {
   try {
     const { userId, habitName } = req.body;
@@ -63,7 +59,6 @@ app.post("/api/habits", async (req, res) => {
   }
 });
 
-// Get habits by user
 app.get("/api/habits/:userId", async (req, res) => {
   try {
     const habits = await Habit.find({ userId: req.params.userId });
@@ -73,7 +68,7 @@ app.get("/api/habits/:userId", async (req, res) => {
   }
 });
 
-// Update habit (mark as completed)
+
 app.put("/api/habits/:id", async (req, res) => {
   try {
     const updatedHabit = await Habit.findByIdAndUpdate(
@@ -87,7 +82,6 @@ app.put("/api/habits/:id", async (req, res) => {
   }
 });
 
-// Delete a habit
 app.delete("/api/habits/:id", async (req, res) => {
   try {
     await Habit.findByIdAndDelete(req.params.id);
@@ -97,26 +91,26 @@ app.delete("/api/habits/:id", async (req, res) => {
   }
 });
 
-// Start the server
+
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
-// POST: Register User
+
 app.post("/api/users/register", async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    // Check if user already exists
+
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "User already exists!" });
     }
 
-    // Create new user
+
     const newUser = new User({ name, email, password });
     await newUser.save();
 
     res.status(201).json({
       message: "User registered successfully!",
-      userId: newUser._id, // Send the user ID here
+      userId: newUser._id, 
     });
   } catch (error) {
     res.status(500).json({ message: "Error registering user", error: error.message });
